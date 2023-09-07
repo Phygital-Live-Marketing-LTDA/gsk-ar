@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>GSK AR</title>
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='GSK_512.png') }}" alt="GSK AR Logo">
+    </header>
+
+    <section class="main-content">
+        <h2>Selecione o filtro desejado:</h2>
+        <div class="file-buttons">
+            <button onclick="runFile('acne.arexport')">Acne</button>
+            <button onclick="runFile('alopecia.arexport')">Alopecia</button>
+            <button onclick="runFile('dermatite.arexport')">Dermatite Atópica</button>
+            <button onclick="runFile('aging.arexport')">Envelhecimento</button>
+            <!-- Add more buttons for your files -->
+        </div>
+    </section>
+
+    <script>
+        // JavaScript function to execute a file
+        function runFile(fileName) {
+            // Send an AJAX request to your Flask route for file execution
+            fetch('/run_file', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ file: fileName })
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Display the execution results
+                document.getElementById('result').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        }
+    </script>
+</body>
+</html>
